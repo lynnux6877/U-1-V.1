@@ -49,6 +49,7 @@ async def on_message(message):
         )
 
     await send_long_message(message.channel, histories[uid][-1]["content"])
-
-client.run(os.getenv("DISCORD_BOT_TOKEN"))
+    
 keep_alive()
+client.run(os.getenv("DISCORD_BOT_TOKEN"))
+
