@@ -1,7 +1,7 @@
 import os
 import discord
 from chat import print_messages, get_init_messages, chat
-
+from keep_alive import keep_alive
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -51,3 +51,4 @@ async def on_message(message):
     await send_long_message(message.channel, histories[uid][-1]["content"])
 
 client.run(os.getenv("DISCORD_BOT_TOKEN"))
+keep_alive()
