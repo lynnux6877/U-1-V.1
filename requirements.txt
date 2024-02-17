@@ -8,3 +8,5 @@ yt-dlp
 aiodns==3.0.0
 aiohttp==3.8.4
 python-dotenv
+keep-alive
+flask
