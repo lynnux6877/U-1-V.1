@@ -9,6 +9,8 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+histories = {}
+
 async def send_long_message(channel, message):
     while len(message) > 2000:
         msg = message[:2000]
