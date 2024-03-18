@@ -31,8 +31,8 @@ async def on_message(message):
     if uid not in histories:
         histories[uid] = []
 
-    # Verifica se a mensagem começa com "!oss"
-    if message.content.strip().startswith("!oss"):
+    # Verifica se a mensagem é exatamente "!oss"
+    if message.content.strip() == "!oss":
         async with message.channel.typing():
             message_content = ("[" + message.author.name + "] " if message.guild else "") + message.content
             print_messages([{"role": message.author.name, "content": message.content}])
