@@ -43,6 +43,12 @@ async def on_message(message):
     async with message.channel.typing():
         message_content = ("[" + message.author.name + "] " if message.guild else "") + message.content
         print_messages([{"role": message.author.name, "content": message.content}])
+        
+        # Check if the message content is exactly "!oss"
+        if message.content.strip() == "!oss":
+            await message.channel.send("Resposta apenas ao comando !oss.")
+            return
+        
         histories[uid] = await chat(
             histories[uid],
             message_content,
@@ -52,7 +58,5 @@ async def on_message(message):
 
     await send_long_message(message.channel, histories[uid][-1]["content"])
 
-      
 keep_alive()
 client.run(os.getenv("DISCORD_BOT_TOKEN"))
-
