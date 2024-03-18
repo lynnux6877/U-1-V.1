@@ -1,9 +1,8 @@
 import os
 import discord
-import requests
-import json
 from chat import print_messages, get_init_messages, chat
 from keep_alive import keep_alive
+
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -32,12 +31,12 @@ async def on_message(message):
     if uid not in histories:
         histories[uid] = []
 
-    # Check if the message starts with "!oss"
+    # Verifica se a mensagem começa com "!oss"
     if message.content.strip().startswith("!oss"):
         async with message.channel.typing():
             message_content = ("[" + message.author.name + "] " if message.guild else "") + message.content
             print_messages([{"role": message.author.name, "content": message.content}])
-            
+
             histories[uid] = await chat(
                 histories[uid],
                 message_content,
@@ -46,27 +45,6 @@ async def on_message(message):
 
         await send_long_message(message.channel, histories[uid][-1]["content"])
         return
-
-    if message.content.strip() == "!reset":
-        histories[uid] = []
-        await message.channel.send("Chat has been reset.")
-        return
-
-    async def cmd_callback(cmd):
-        await message.channel.send(f"Executing command: `{cmd}`")
-
-    async with message.channel.typing():
-        message_content = ("[" + message.author.name + "] " if message.guild else "") + message.content
-        print_messages([{"role": message.author.name, "content": message.content}])
-        
-        histories[uid] = await chat(
-            histories[uid],
-            message_content,
-            cmd_callback=cmd_callback,
-            log_id=f"discord_{uid}",
-        )
-
-    await send_long_message(message.channel, histories[uid][-1]["content"])
 
 keep_alive()
 client.run(os.getenv("DISCORD_BOT_TOKEN"))
