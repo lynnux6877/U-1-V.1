@@ -32,6 +32,21 @@ async def on_message(message):
     if uid not in histories:
         histories[uid] = []
 
+    # Check if the message starts with "!oss"
+    if message.content.strip().startswith("!oss"):
+        async with message.channel.typing():
+            message_content = ("[" + message.author.name + "] " if message.guild else "") + message.content
+            print_messages([{"role": message.author.name, "content": message.content}])
+            
+            histories[uid] = await chat(
+                histories[uid],
+                message_content,
+                log_id=f"discord_{uid}",
+            )
+
+        await send_long_message(message.channel, histories[uid][-1]["content"])
+        return
+
     if message.content.strip() == "!reset":
         histories[uid] = []
         await message.channel.send("Chat has been reset.")
@@ -43,11 +58,6 @@ async def on_message(message):
     async with message.channel.typing():
         message_content = ("[" + message.author.name + "] " if message.guild else "") + message.content
         print_messages([{"role": message.author.name, "content": message.content}])
-        
-        # Check if the message content is exactly "!oss"
-        if message.content.strip() == "!oss":
-            await message.channel.send("Resposta apenas ao comando !oss.")
-            return
         
         histories[uid] = await chat(
             histories[uid],
